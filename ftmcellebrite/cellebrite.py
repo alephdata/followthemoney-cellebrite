@@ -142,6 +142,7 @@ class CellebriteConverter(TimestampSupport, CellebriteXMLSupport):
             else:
                 entity.add('caller', party)
                 entity.add('callerNumber', party.get('phone'))
+            yield party
 
         yield entity
 
@@ -164,10 +165,12 @@ class CellebriteConverter(TimestampSupport, CellebriteXMLSupport):
             senders = message.xpath('./ns:modelField[@name="From"]/ns:model[@type="Party"]', namespaces=ns)  # noqa
             for sender in self.parse_parties(senders):
                 entity.add('sender', sender)
+                yield sender
 
             receivers = message.xpath('./ns:modelField[@name="To"]/ns:model[@type="Party"]', namespaces=ns)  # noqa
             for receiver in self.parse_parties(receivers):
                 entity.add('recipients', receiver)
+                yield receiver
 
             status = self._field_values(message, 'Status')
             if 'Read' in status:
@@ -203,7 +206,7 @@ class CellebriteConverter(TimestampSupport, CellebriteXMLSupport):
         entity.add('bodyText', self._field_values(note, 'Body'))
         for timestamp in self._field_values(note, 'Creation'):
             entity.add('date', self.parse_timestamp(timestamp))
-        self.manager.emit_entity(entity)
+        yield entity
 
     def parse_sms(self, sms):
         entity = model.make_entity('Message')
