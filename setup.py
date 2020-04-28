@@ -5,7 +5,7 @@ with open('README.md') as f:
 
 setup(
     name='followthemoney-cellebrite',
-    version='0.0.1',
+    version='0.1.0',
     author='Organized Crime and Corruption Reporting Project',
     author_email='data@occrp.org',
     long_description=long_description,
