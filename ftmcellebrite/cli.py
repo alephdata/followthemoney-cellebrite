@@ -12,10 +12,9 @@ from ftmcellebrite.cellebrite import CellebriteConverter
 @click.option('--country', help="2 letter country code")
 def import_cellebrite(infile, outfile, owner, country):
     try:
-        while True:
-            converter = CellebriteConverter(infile, owner, country)
-            for entity in converter.convert():
-                if entity.id is not None:
-                    write_object(outfile, entity)
+        converter = CellebriteConverter(infile, owner, country)
+        for entity in converter.convert():
+            if entity.id is not None:
+                write_object(outfile, entity)
     except BrokenPipeError:
         raise click.Abort()
