@@ -180,6 +180,10 @@ class CellebriteConverter(TimestampSupport, CellebriteXMLSupport):
 
             entity.add('bodyText', self._field_values(message, 'Body'))
 
+            # Re-use body text as subject if we don't have one
+            if not entity.get('subject'):
+                entity.add('subject', entity.get('bodyText'))
+
             # attachments = message.xpath(
             #     './ns:multiModelField[@name="Attachments"]/'
             #     'ns:model[@type="Attachment"]/ns:field[@name="Filename"]'
